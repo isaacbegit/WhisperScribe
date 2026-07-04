@@ -5,11 +5,6 @@
 No cloud upload, no subscription: your audio never leaves the machine. Transcription runs
 entirely on-device using OpenAI's Whisper model via `Whisper.net` (a native wrapper around
 `whisper.cpp`), with automatic CPU/GPU acceleration and a modern desktop UI.
-
-> Other name options considered: *EchoScript*, *Vocalis*, *ScribeWave*, *AuralInk*. **WhisperScribe**
-> was chosen because it's immediately descriptive (Whisper model + transcription/"scribe"),
-> easy to say, and unclaimed-feeling as a product name.
-
 ---
 ![Alt text](src/WhisperScribe/images/main.jpg)
 ## ✨ Features
