@@ -11,7 +11,7 @@ entirely on-device using OpenAI's Whisper model via `Whisper.net` (a native wrap
 > easy to say, and unclaimed-feeling as a product name.
 
 ---
-
+![Alt text](src/WhisperScribe/images/main.jpg)
 ## ✨ Features
 
 - **Tab 1 — Transcript**: drag in one or many audio files, see size/duration/detected language
