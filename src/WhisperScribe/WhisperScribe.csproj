@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>WhisperScribe</RootNamespace>
+    <AssemblyName>WhisperScribe</AssemblyName>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- MVVM toolkit (source generators for ObservableObject / RelayCommand) -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+
+    <!-- Local Whisper inference (wraps whisper.cpp) -->
+    <PackageReference Include="Whisper.net" Version="1.8.1" />
+    <PackageReference Include="Whisper.net.Runtime" Version="1.8.1" />
+    <!-- Optional CUDA-accelerated runtime, used automatically when an NVIDIA GPU is selected -->
+    <PackageReference Include="Whisper.net.Runtime.Cuda" Version="1.8.1" />
+
+    <!-- SQLite storage -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+
+    <!-- Audio decoding / resampling / duration probing (mp3, wav, m4a, flac, ogg, wma, aac...) -->
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Lame" Version="2.1.0" />
+
+    <!-- GPU / hardware inventory -->
+    <PackageReference Include="System.Management" Version="9.0.0" />
+
+    <!-- JSON export -->
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**\*" />
+  </ItemGroup>
+
+</Project>

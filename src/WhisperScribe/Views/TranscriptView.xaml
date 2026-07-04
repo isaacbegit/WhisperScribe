@@ -1,0 +1,215 @@
+<UserControl x:Class="WhisperScribe.Views.TranscriptView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:WhisperScribe.Models">
+
+    <Grid Margin="24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.15*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="0.85*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ============================================================= -->
+        <!-- LEFT COLUMN: file queue + model settings                       -->
+        <!-- ============================================================= -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- File queue card -->
+            <Border Grid.Row="0" Style="{StaticResource Panel.Card}">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top" Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Audio Queue" Style="{StaticResource Text.H2}" />
+                            <TextBlock Text="Browse local audio files and track transcription progress" Style="{StaticResource Text.Caption}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Content="Clear" Style="{StaticResource Button.Secondary}" Command="{Binding ClearFilesCommand}" Margin="0,0,8,0" />
+                            <Button Content="＋ Browse Files" Style="{StaticResource Button.Danger}" Command="{Binding BrowseFilesCommand}" MinWidth="200" />
+                        </StackPanel>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="FILE NAME" Binding="{Binding FileName}" Width="2.2*" />
+                            <DataGridTextColumn Header="SIZE" Binding="{Binding FileSizeDisplay}" Width="0.8*" />
+                            <DataGridTextColumn Header="DURATION" Binding="{Binding DurationDisplay}" Width="0.9*" />
+                            <DataGridTextColumn Header="LANGUAGE" Binding="{Binding DetectedLanguage}" Width="0.9*" />
+                            <DataGridTemplateColumn Header="PROGRESS" Width="1.6*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel VerticalAlignment="Center" Margin="0,4">
+                                            <TextBlock Text="{Binding StatusMessage}" Style="{StaticResource Text.Caption}"
+                                                       Foreground="{Binding Status, Converter={StaticResource StatusToBrush}}" Margin="0,0,0,3"/>
+                                            <ProgressBar Value="{Binding ProgressPercent, Mode=OneWay}" Minimum="0" Maximum="100" Height="6" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="" Width="40">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="✕" Style="{StaticResource Button.Icon}"
+                                                Command="{Binding DataContext.RemoveFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" Width="26" Height="26" FontSize="10" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Border>
+
+            <!-- Model / conversion settings card -->
+            <Border Grid.Row="2" Style="{StaticResource Panel.Card}">
+                <StackPanel>
+                    <TextBlock Text="Model &amp; Conversion Settings" Style="{StaticResource Text.H2}" Margin="0,0,0,14" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="HARDWARE" Style="{StaticResource Text.Label}" />
+                            <ComboBox ItemsSource="{Binding HardwareOptions}" SelectedItem="{Binding SelectedHardware}" DisplayMemberPath="DisplayName" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="LANGUAGE" Style="{StaticResource Text.Label}" />
+                            <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="WHISPER MODEL" Style="{StaticResource Text.Label}" />
+                            <ComboBox ItemsSource="{Binding AvailableModels}" SelectedItem="{Binding SelectedModel}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding DisplayName}" VerticalAlignment="Center" />
+                                            <Border Grid.Column="1" CornerRadius="8" Padding="7,2" Margin="10,0,0,0" VerticalAlignment="Center"
+                                                    Background="{StaticResource Brush.Success}"
+                                                    Visibility="{Binding IsDownloaded, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="Downloaded" FontSize="9" FontFamily="Segoe UI Semibold" Foreground="#08210F" />
+                                            </Border>
+                                            <Border Grid.Column="1" CornerRadius="8" Padding="7,2" Margin="10,0,0,0" VerticalAlignment="Center"
+                                                    Background="{StaticResource Brush.Card}" BorderBrush="{StaticResource Brush.StrokeStrong}" BorderThickness="1"
+                                                    Visibility="{Binding IsDownloaded, Converter={StaticResource InverseBoolToVis}}">
+                                                <TextBlock Text="Not downloaded" FontSize="9" FontFamily="Segoe UI Semibold" Foreground="{StaticResource Brush.TextMuted}" />
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Background="{StaticResource Brush.Card}" BorderBrush="{StaticResource Brush.Warning}" BorderThickness="1.5"
+                            CornerRadius="8" Padding="12,9" Margin="0,12,0,0"
+                            Visibility="{Binding IsModelReady, Converter={StaticResource InverseBoolToVis}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚠" FontSize="14" Foreground="{StaticResource Brush.Warning}" VerticalAlignment="Top" Margin="0,0,8,0" />
+                            <TextBlock Text="{Binding ModelStatusMessage}" Style="{StaticResource Text.Caption}"
+                                       Foreground="{StaticResource Brush.Warning}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Convert Selected" Style="{StaticResource Button.Secondary}"
+                                Command="{Binding ConvertSelectedCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                        <Button Grid.Column="2" Content="Convert All" Style="{StaticResource Button.Primary}"
+                                Command="{Binding ConvertAllCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                    </Grid>
+
+                    <StackPanel Margin="0,14,0,0" Visibility="{Binding IsConverting, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="Overall Progress" Style="{StaticResource Text.Caption}" Margin="0,0,0,6" />
+                        <ProgressBar Value="{Binding OverallProgress, Mode=OneWay}" Minimum="0" Maximum="100" Height="10" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ============================================================= -->
+        <!-- RIGHT COLUMN: converted output preview (Text / SRT / JSON)      -->
+        <!-- ============================================================= -->
+        <Border Grid.Column="2" Style="{StaticResource Panel.Card}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="0,0,0,14">
+                    <TextBlock Text="Output Preview" Style="{StaticResource Text.H2}" />
+                    <TextBlock Text="{Binding SelectedFile.FileName, TargetNullValue='Select a file from the queue'}" Style="{StaticResource Text.Caption}" />
+                </StackPanel>
+
+                <TabControl Grid.Row="1" Style="{StaticResource TabControl.Pill}">
+                    <TabItem Header="TEXT" Style="{StaticResource TabItem.Pill}">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Bottom" Content="⭳ Export .txt" Style="{StaticResource Button.Danger}"
+                                    HorizontalAlignment="Right" Margin="0,12,0,0" MinWidth="200" Height="48" FontSize="14"
+                                    Command="{Binding ExportPlainTextCommand}" CommandParameter="{Binding SelectedFile}" />
+                            <Border Background="{StaticResource Brush.Surface}" CornerRadius="10" Padding="14">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <TextBlock Text="{Binding SelectedFile.PlainText, TargetNullValue='No transcript yet.'}"
+                                               TextWrapping="Wrap" Foreground="{StaticResource Brush.TextPrimary}" FontSize="13" LineHeight="22" />
+                                </ScrollViewer>
+                            </Border>
+                        </DockPanel>
+                    </TabItem>
+
+                    <TabItem Header="SRT" Style="{StaticResource TabItem.Pill}">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Bottom" Content="⭳ Export .srt" Style="{StaticResource Button.Danger}"
+                                    HorizontalAlignment="Right" Margin="0,12,0,0" MinWidth="200" Height="48" FontSize="14"
+                                    Command="{Binding ExportSrtCommand}" CommandParameter="{Binding SelectedFile}" />
+                            <Border Background="{StaticResource Brush.Surface}" CornerRadius="10" Padding="14">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <TextBlock Text="{Binding SelectedFile.SrtText, TargetNullValue='No subtitles yet.'}"
+                                               TextWrapping="Wrap" FontFamily="Consolas" Foreground="{StaticResource Brush.TextPrimary}" FontSize="12.5" LineHeight="20" />
+                                </ScrollViewer>
+                            </Border>
+                        </DockPanel>
+                    </TabItem>
+
+                    <TabItem Header="JSON" Style="{StaticResource TabItem.Pill}">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Bottom" Content="⭳ Export .json" Style="{StaticResource Button.Danger}"
+                                    HorizontalAlignment="Right" Margin="0,12,0,0" MinWidth="200" Height="48" FontSize="14"
+                                    Command="{Binding ExportJsonCommand}" CommandParameter="{Binding SelectedFile}" />
+                            <Border Background="{StaticResource Brush.Surface}" CornerRadius="10" Padding="14">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <TextBlock Text="{Binding SelectedFile.JsonText, TargetNullValue='No JSON output yet.'}"
+                                               TextWrapping="Wrap" FontFamily="Consolas" Foreground="{StaticResource Brush.TextPrimary}" FontSize="12.5" LineHeight="20" />
+                                </ScrollViewer>
+                            </Border>
+                        </DockPanel>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

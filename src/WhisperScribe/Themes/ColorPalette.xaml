@@ -1,0 +1,86 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ===================== Brand palette (navy / blue dashboard style) ===================== -->
+    <Color x:Key="Color.MidnightInk">#0B1220</Color>    <!-- app background -->
+    <Color x:Key="Color.Sidebar">#0F1B2E</Color>        <!-- left nav panel -->
+    <Color x:Key="Color.RoyalGrape">#2F6FED</Color>     <!-- primary blue : buttons / active nav / links -->
+    <Color x:Key="Color.ElectricOrchid">#4C82F0</Color> <!-- lighter blue : hover -->
+    <Color x:Key="Color.SolarAmber">#22C55E</Color>     <!-- success green : paid / registered / save actions -->
+
+    <!-- Derived neutrals & surfaces -->
+    <Color x:Key="Color.SurfaceRaised">#101B30</Color>
+    <Color x:Key="Color.SurfaceCard">#131F35</Color>
+    <Color x:Key="Color.SurfaceCardHover">#182742</Color>
+    <Color x:Key="Color.StrokeSubtle">#1E2A44</Color>
+    <Color x:Key="Color.StrokeStrong">#2C3B5C</Color>
+    <Color x:Key="Color.TextPrimary">#F5F7FA</Color>
+    <Color x:Key="Color.TextSecondary">#8A94A6</Color>
+    <Color x:Key="Color.TextMuted">#5B6478</Color>
+    <Color x:Key="Color.Success">#22C55E</Color>
+    <Color x:Key="Color.Warning">#F5A623</Color>
+    <Color x:Key="Color.Danger">#EF4444</Color>
+    <Color x:Key="Color.CyanAccent">#22D3EE</Color>
+
+    <!-- ===================== Brushes ===================== -->
+    <SolidColorBrush x:Key="Brush.Background" Color="{StaticResource Color.MidnightInk}" />
+    <SolidColorBrush x:Key="Brush.Sidebar" Color="{StaticResource Color.Sidebar}" />
+    <SolidColorBrush x:Key="Brush.Primary" Color="{StaticResource Color.RoyalGrape}" />
+    <SolidColorBrush x:Key="Brush.Accent" Color="{StaticResource Color.ElectricOrchid}" />
+    <SolidColorBrush x:Key="Brush.Highlight" Color="{StaticResource Color.RoyalGrape}" />
+    <SolidColorBrush x:Key="Brush.Surface" Color="{StaticResource Color.SurfaceRaised}" />
+    <SolidColorBrush x:Key="Brush.Card" Color="{StaticResource Color.SurfaceCard}" />
+    <SolidColorBrush x:Key="Brush.CardHover" Color="{StaticResource Color.SurfaceCardHover}" />
+    <SolidColorBrush x:Key="Brush.StrokeSubtle" Color="{StaticResource Color.StrokeSubtle}" />
+    <SolidColorBrush x:Key="Brush.StrokeStrong" Color="{StaticResource Color.StrokeStrong}" />
+    <SolidColorBrush x:Key="Brush.TextPrimary" Color="{StaticResource Color.TextPrimary}" />
+    <SolidColorBrush x:Key="Brush.TextSecondary" Color="{StaticResource Color.TextSecondary}" />
+    <SolidColorBrush x:Key="Brush.TextMuted" Color="{StaticResource Color.TextMuted}" />
+    <SolidColorBrush x:Key="Brush.Success" Color="{StaticResource Color.Success}" />
+    <SolidColorBrush x:Key="Brush.Warning" Color="{StaticResource Color.Warning}" />
+    <SolidColorBrush x:Key="Brush.Danger" Color="{StaticResource Color.Danger}" />
+    <SolidColorBrush x:Key="Brush.MidnightInk" Color="{StaticResource Color.MidnightInk}" />
+
+    <!-- Primary blue gradient — used on primary buttons / active sidebar item -->
+    <LinearGradientBrush x:Key="Brush.BrandGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource Color.RoyalGrape}" Offset="0" />
+        <GradientStop Color="{StaticResource Color.ElectricOrchid}" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Brush.BrandGradientHover" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#3A7BF5" Offset="0" />
+        <GradientStop Color="#699AF5" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Success (green) gradient — used for confirm / save / export actions -->
+    <LinearGradientBrush x:Key="Brush.AmberGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#22C55E" Offset="0" />
+        <GradientStop Color="#3ADB77" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Blue/cyan gradient — used for determinate progress bar fills -->
+    <LinearGradientBrush x:Key="Brush.ProgressGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Color.RoyalGrape}" Offset="0" />
+        <GradientStop Color="{StaticResource Color.CyanAccent}" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Logo mark gradient -->
+    <LinearGradientBrush x:Key="Brush.LogoGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource Color.CyanAccent}" Offset="0" />
+        <GradientStop Color="{StaticResource Color.RoyalGrape}" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Brush.HeaderGlow" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#101B30" Offset="0" />
+        <GradientStop Color="#0B1220" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Selected sidebar tab — 4-stop horizontal gradient, fading left to right -->
+    <LinearGradientBrush x:Key="Brush.SidebarSelectedGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#175BC0" Offset="0" />
+        <GradientStop Color="#0C3B84" Offset="0.33" />
+        <GradientStop Color="#081C45" Offset="0.66" />
+        <GradientStop Color="#06163C" Offset="1" />
+    </LinearGradientBrush>
+
+</ResourceDictionary>

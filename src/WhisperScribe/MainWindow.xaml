@@ -1,0 +1,78 @@
+<Window x:Class="WhisperScribe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:WhisperScribe.Views"
+        xmlns:vm="clr-namespace:WhisperScribe.ViewModels"
+        Style="{StaticResource Window.Base}"
+        Title="WhisperScribe" Height="820" Width="1360" MinHeight="640" MinWidth="1080"
+        WindowStyle="None" AllowsTransparency="True" Background="{StaticResource Brush.Background}"
+        ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Border BorderBrush="{StaticResource Brush.StrokeStrong}" BorderThickness="1" CornerRadius="12" Background="{StaticResource Brush.Background}">
+        <DockPanel>
+
+            <!-- ===================== Slim drag / window-control strip ===================== -->
+            <Border DockPanel.Dock="Top" Height="36" Background="{StaticResource Brush.Sidebar}"
+                    CornerRadius="12,12,0,0" MouseLeftButtonDown="Header_MouseLeftButtonDown">
+                <Grid Margin="20,0">
+                    <TextBlock Text="Whisper Scribe studio" Style="{StaticResource Text.Caption}" VerticalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Style="{StaticResource Button.Icon}" Content="—" Click="Minimize_Click" ToolTip="Minimize" Width="28" Height="28" />
+                        <Button Style="{StaticResource Button.Icon}" Content="▢" Click="Maximize_Click" ToolTip="Maximize / Restore" Width="28" Height="28" />
+                        <Button Style="{StaticResource Button.Icon}" Content="✕" Click="Close_Click" ToolTip="Close" Foreground="{StaticResource Brush.Danger}" Width="28" Height="28" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ===================== Status bar ===================== -->
+            <Border DockPanel.Dock="Bottom" Height="34" Background="{StaticResource Brush.Sidebar}" CornerRadius="0,0,12,12">
+                <Grid Margin="20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="220" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Settings.StatusBarMessage}" Style="{StaticResource Text.Caption}" VerticalAlignment="Center" />
+                    <Grid Grid.Column="1" VerticalAlignment="Center" Visibility="{Binding Settings.IsAnyDownloadInProgress, Converter={StaticResource BoolToVis}}">
+                        <ProgressBar Value="{Binding Settings.StatusBarProgress, Mode=OneWay}" Minimum="0" Maximum="100" Height="6" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- ===================== Sidebar navigation + content ===================== -->
+            <TabControl Style="{StaticResource TabControl.Sidebar}" SelectedIndex="{Binding SelectedTabIndex}">
+                <TabItem Style="{StaticResource TabItem.Sidebar}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE720;" FontFamily="Segoe MDL2 Assets" FontSize="15" Margin="0,0,12,0" VerticalAlignment="Center" />
+                            <TextBlock Text="Transcript" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <views:TranscriptView DataContext="{Binding Transcript}" />
+                </TabItem>
+                <TabItem Style="{StaticResource TabItem.Sidebar}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="15" Margin="0,0,12,0" VerticalAlignment="Center" />
+                            <TextBlock Text="Converted" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <views:ConvertedView DataContext="{Binding Converted}" />
+                </TabItem>
+                <TabItem Style="{StaticResource TabItem.Sidebar}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="15" Margin="0,0,12,0" VerticalAlignment="Center" />
+                            <TextBlock Text="Settings" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <views:SettingsView DataContext="{Binding Settings}" />
+                </TabItem>
+            </TabControl>
+
+        </DockPanel>
+    </Border>
+</Window>
